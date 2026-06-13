@@ -234,10 +234,72 @@ juriscalc/
 
 - O projeto usa **ES modules nativos** (não requer bundler)
 - TypeScript é compilado via `tsc` ou consumido diretamente com `ts-node`
-- O arquivo `index.html` referencia `./dist/main.js` (compilado TypeScript)
+- O arquivo `index.html` referencia `./public/main.js` (compilado TypeScript)
 - O diretório `src/` contém apenas `.ts` e `.css` — sem `.js` poluído
-- O diretório `dist/` contém o runtime compilado e é commitado (necessário para GitHub Pages)
+- O diretório `public/` contém o runtime compilado e é commitado (necessário para GitHub Pages / Vercel)
 - `src/**/*.js` está no `.gitignore` para evitar poluição
 - `.github/workflows/deploy.yml` faz typecheck + build + deploy para GitHub Pages
 - Ícones Lucide carregados via CDN com `defer`
 - Zero dependências de runtime (exceto Lucide CDN)
+
+---
+
+## 10. Migração para Vercel (13/06/2026)
+
+### Problema
+
+Ao tentar fazer deploy no Vercel, o build falhou com o erro:
+
+> Nenhum diretório de saída chamado "public" foi encontrado após a conclusão da compilação.
+> Configure o diretório de saída nas configurações do seu projeto. Como alternativa, configure vercel.json#outputDirectory.
+
+O projeto compilava o TypeScript para `dist/`, mas o Vercel espera o diretório `public/` por padrão.
+
+### Solução — Renomear `dist/` → `public/`
+
+| Arquivo | Alteração |
+|---------|-----------|
+| `tsconfig.json` | `"outDir": "./dist"` → `"./public"` |
+| `index.html` | `./dist/main.js` → `./public/main.js` |
+| `.gitignore` | `dist/*.js.map` → `public/*.js.map` |
+
+Commit: `fa8d4e7` — `"chore: rename dist -> public for Vercel deploy"`
+
+### Erro 404 — Implantação Não Encontrada
+
+Após reconfigurar para `public/`, o Vercel retornou **404 NOT_FOUND**:
+
+> Esta implantação não foi encontrada.
+
+**Causa:** O `index.html` está na **raiz do projeto**, mas `outputDirectory: public` faz o Vercel servir apenas arquivos dentro de `public/`. O HTML nunca era encontrado.
+
+**Solução:** Criar `vercel.json` com `outputDirectory: "."`:
+
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "."
+}
+```
+
+Isso mantém o build em `public/`, mas o Vercel serve os arquivos a partir da raiz do projeto.
+
+Commit: `ab45bd8` — `"chore: add vercel.json with outputDirectory ."`
+
+### Comandos Executados
+
+```bash
+# Remover diretório antigo e recompilar
+Remove-Item -LiteralPath "dist" -Recurse -Force
+npm run build                                          # Compila para public/
+
+# Versionamento
+git add -A
+git commit -m "chore: rename dist -> public for Vercel deploy"
+git push
+
+# Após 404 — criar vercel.json
+git add vercel.json
+git commit -m "chore: add vercel.json with outputDirectory ."
+git push
+```
