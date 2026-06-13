@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JurisCalc — Calculadora de Verbas Rescisórias</title>
+  <meta name="description" content="Calcule verbas rescisórias CLT de forma rápida, segura e gratuita. Processamento 100% local.">
+  <meta name="theme-color" content="#1E3A8A">
+  <link rel="stylesheet" href="./src/style.css">
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+</head>
+<body class="dark-theme">
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button">
+    <span class="toggle-track">
+      <span class="toggle-thumb">
+        <i data-lucide="sun" class="icon-sun" aria-hidden="true"></i>
+        <i data-lucide="moon" class="icon-moon" aria-hidden="true"></i>
+      </span>
+    </span>
+  </button>
+
+  <div class="container">
+    <header>
+      <div class="header-brand">
+        <i data-lucide="scale" class="header-icon" aria-hidden="true"></i>
+        <h1>JurisCalc</h1>
+      </div>
+      <p class="subtitle">Calculadora de Verbas Rescisórias — CLT</p>
+      <div class="privacy-badge" role="status">
+        <i data-lucide="shield" aria-hidden="true"></i>
+        <span><strong>Privacidade total:</strong> seus dados são processados localmente. Nada é salvo ou enviado.</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="card">
+        <form id="form-calculadora" novalidate>
+          <div class="form-group">
+            <label for="salario">Salário Base</label>
+            <input type="number" id="salario" step="0.01" min="0.01" required placeholder="R$ 0,00" autocomplete="off">
+            <span class="field-error" id="erro-salario" role="alert" aria-live="polite"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="data-admissao">Data de Admissão</label>
+              <input type="date" id="data-admissao" required>
+              <span class="field-error" id="erro-admissao" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="data-demissao">Data de Demissão</label>
+              <input type="date" id="data-demissao" required>
+              <span class="field-error" id="erro-demissao" role="alert" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="motivo">Motivo da Rescisão</label>
+            <select id="motivo" required>
+              <option value="semJustaCausa">Demissão sem Justa Causa</option>
+              <option value="pedidoDemissao">Pedido de Demissão</option>
+            </select>
+          </div>
+
+          <div class="form-error-global" id="erro-global" role="alert" aria-live="assertive">
+            <i data-lucide="alert-circle" aria-hidden="true"></i>
+            <span></span>
+          </div>
+
+          <button type="submit" id="btn-calcular" class="btn-primary">
+            <i data-lucide="calculator" aria-hidden="true"></i>
+            <span class="btn-text">Calcular Verbas</span>
+            <span class="loading-spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+      </div>
+
+      <section id="resultado" class="result-section hidden" aria-live="polite">
+        <div class="card">
+          <div class="result-header">
+            <h2>Resumo do Cálculo</h2>
+            <div class="result-actions">
+              <button id="btn-imprimir" class="btn-secondary" type="button" aria-label="Imprimir ou exportar PDF">
+                <i data-lucide="printer" aria-hidden="true"></i>
+                Imprimir
+              </button>
+            </div>
+          </div>
+
+          <table class="result-table" aria-label="Detalhamento das verbas rescisórias">
+            <tbody>
+              <tr class="tr-section"><td colspan="2">Verbas Devidas</td></tr>
+              <tr><td>Saldo de Salário</td><td id="res-saldo">R$ 0,00</td></tr>
+              <tr><td>Aviso Prévio</td><td id="res-aviso">R$ 0,00</td></tr>
+              <tr><td>13º Salário Proporcional</td><td id="res-13">R$ 0,00</td></tr>
+              <tr><td>Férias Proporcionais</td><td id="res-ferias">R$ 0,00</td></tr>
+              <tr><td>1/3 Constitucional sobre Férias</td><td id="res-terco">R$ 0,00</td></tr>
+
+              <tr class="tr-section"><td colspan="2">FGTS e Multa</td></tr>
+              <tr><td>FGTS (8%)</td><td id="res-fgts">R$ 0,00</td></tr>
+              <tr id="row-multa-fgts"><td>Multa FGTS (40%)</td><td id="res-multa-fgts">R$ 0,00</td></tr>
+
+              <tr class="tr-section"><td colspan="2">Descontos</td></tr>
+              <tr><td>INSS</td><td id="res-inss">R$ 0,00</td></tr>
+              <tr><td>IRRF</td><td id="res-irrf">R$ 0,00</td></tr>
+
+              <tr class="tr-section"><td colspan="2">Totais</td></tr>
+              <tr class="tr-total"><td>Total Líquido Estimado</td><td id="res-total-liquido">R$ 0,00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="./dist/main.js"></script>
+</body>
+</html>

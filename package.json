@@ -1,0 +1,16 @@
+{
+  "name": "juriscalc",
+  "version": "2.0.0",
+  "description": "JurisCalc — Calculadora de Verbas Rescisórias CLT",
+  "type": "module",
+  "scripts": {
+    "build": "npx tsc",
+    "watch": "npx tsc --watch",
+    "typecheck": "npx tsc --noEmit"
+  },
+  "keywords": ["clt", "rescisao", "trabalhista", "calculo", "juridico"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

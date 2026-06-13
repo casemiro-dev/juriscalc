@@ -1,0 +1,4 @@
+node_modules/
+dist/*.js.map
+dist/types.js
+src/**/*.js
