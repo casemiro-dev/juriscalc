@@ -211,20 +211,22 @@ juriscalc/
 
 ---
 
-## 8. Próximos Passos (GitHub)
+## 8. Configuração Git e GitHub (13/06/2026)
 
-Pendente — continuar de:
+### Realizado
 
-```bash
-cd E:\Projetos-github\calculadora
-git init
-git add .
-git commit -m "feat: JurisCalc v2 — TypeScript + design system jurídico"
-git remote add origin https://github.com/SEU_USUARIO/juriscalc.git
-git push -u origin main
-```
+- `git init` no diretório do projeto
+- Repositório `casemiro-dev/juriscalc` criado no GitHub
+- Git configurado com user `casemir-dev` / `franciscorpg9@gmail.com`
+- `git add .` + commit `be65f7e`: `"feat: JurisCalc v2 — TypeScript + design system jurídico"` (20 arquivos, 2161 inserções)
+- Branch renomeada de `master` para `main`
+- Remote `origin` vinculado a `https://github.com/casemiro-dev/juriscalc.git`
+- `git push -u origin main` realizado com sucesso
 
-Após o push, ativar GitHub Pages em Settings > Pages > Source: "GitHub Actions"
+### Pendente
+
+- Ativar GitHub Pages em **Settings > Pages > Source: "GitHub Actions"**
+- Site publicado em `https://casemiro-dev.github.io/juriscalc`
 
 ---
 

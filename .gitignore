@@ -1,4 +1,4 @@
 node_modules/
-dist/*.js.map
-dist/types.js
+public/*.js.map
+public/types.js
 src/**/*.js
